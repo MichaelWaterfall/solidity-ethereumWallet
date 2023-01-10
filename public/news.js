@@ -1,4 +1,4 @@
-const newsText1 = document.getElementById("news1");
+/*const newsText1 = document.getElementById("news1");
 const newsText2 = document.getElementById("news2");
 const newsText3 = document.getElementById("news3");
 const newsText4 = document.getElementById("news4");
@@ -75,3 +75,4 @@ const getArticles = async () => {
 }; 
 
 getArticles();
+*/

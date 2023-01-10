@@ -130,7 +130,7 @@ let contractAbi = [
     "type": "function"
   }
 ];
-let contractAddress = '0x58ce59853F0Bb8bF96f3Bc4A21609AC04692e341';
+let contractAddress = '0x9722367FF27295397c2d4fD555EfB2025e5D8C76';
 //const Web3 = require('web3');
 let web3 = new Web3('http://127.0.0.1:9545/');
 
@@ -205,7 +205,7 @@ const initializeApp = async () => {
         .balanceOf()
         .call()
         .then(result => {
-          $balance.innerHTML = `ETH: ${(result / 1000000000000000000).toFixed(1)}`;
+          $balance.innerHTML = `ETH: ${(result / 1000000000000000000).toFixed(3)}`;
           
           //console.log(`${result} ETH added to balance`);
           
@@ -234,8 +234,12 @@ const initializeApp = async () => {
           //result is an object array which can not be reversed so I had to convert the result array
           //into a string array I did this by mapping and returning two new arrays one for the address
           //and another for the amount. Now the transaction list and show the latest transaction at the top
-
-          for (let i = 0; i < 10; i++) {
+          let counter = ethResult.length;
+          if(counter === 10){
+            counter = 10;
+          }
+          
+          for (let i = 0; i < counter; i++) {
             
             //box
             const newDiv = document.createElement("div");
@@ -268,12 +272,12 @@ const initializeApp = async () => {
             newPrice.classList.add("new-price");
             //newPrice.classList.add("price text-danger");
             if(newResult[i] === accounts[0]) {
-              newPrice.innerHTML = `ETH: +${(ethResult[i] / 1000000000000000000).toFixed(1)}`;
+              newPrice.innerHTML = `ETH: +${(ethResult[i] / 1000000000000000000).toFixed(3)}`;
               newPrice.style.color = "green";
               newRight.appendChild(newPrice);
               newP.innerHTML = 'Deposited From';
             } else {
-              newPrice.innerHTML = `ETH: -${(ethResult[i] / 1000000000000000000).toFixed(1)}`;
+              newPrice.innerHTML = `ETH: -${(ethResult[i] / 1000000000000000000).toFixed(3)}`;
               newPrice.style.color = "red";
               newRight.appendChild(newPrice);
               newP.innerHTML = 'Sent To';
@@ -298,21 +302,25 @@ const initializeApp = async () => {
       .then(result => {
         console.log(result);
         refreshBalance();
+        location.reload();
+        //refreshBalance();
         
       })
       .catch(_e => {
         console.log(e);
       });
+      
     etherWalletContract.methods 
       .createTransaction(web3.utils.toBN(amount))
       .send({from: accounts[0]})
       .then(result => {
-        location.reload();  
+          
         console.log("test create");
       })
       .catch(error => {
         console.log(error);
       })
+      
   });
 
     $sendButton.addEventListener('click', (e) => {
@@ -325,11 +333,12 @@ const initializeApp = async () => {
         .send({from: accounts[0]})
         .then(result => {
           refreshBalance();
-          location.reload();
+          history.go(0);
         })
         .catch(error => {
           console.log(error);
         })
+        
     })
 
   
